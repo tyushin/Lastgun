@@ -11,6 +11,9 @@ import java.awt.geom.Rectangle2D;
 import java.util.HashMap;
 import java.util.Stack;
 
+import static com.TGame.Main.HEIGHT;
+import static com.TGame.Main.WIDTH;
+
 public class Hero extends Actor implements IUnit{
 
     protected static String name = "Hero";
@@ -50,16 +53,16 @@ public class Hero extends Actor implements IUnit{
 
     @Override
     public void Update(long delta, HashMap<String, Actor> actors, Stack<Actor> actorsToAdd) {
-        if (keyInputHandler.isUpPressed()) {
+        if (keyInputHandler.isUpPressed() && this.y > 0) {
             this.y --;
         }
-        if (keyInputHandler.isDownPressed()) {
+        if (keyInputHandler.isDownPressed() && this.y + this.height < HEIGHT) {
             this.y ++;
         }
-        if (keyInputHandler.isLeftPressed()) {
+        if (keyInputHandler.isLeftPressed() && this.x > 0) {
             this.x --;
         }
-        if (keyInputHandler.isRightPressed()) {
+        if (keyInputHandler.isRightPressed() && this.x + this.width < WIDTH) {
             this.x ++;
         }
 
