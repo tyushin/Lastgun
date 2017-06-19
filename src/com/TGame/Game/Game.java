@@ -1,13 +1,9 @@
 package com.TGame.Game;
 
-import com.TGame.Game.Actors.Actor;
-import com.TGame.Game.Actors.Barracks;
-import com.TGame.Game.Actors.Hero;
-import com.TGame.Game.Actors.Solider;
+import com.TGame.Game.Actors.*;
 
 import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.event.*;
 import java.awt.image.BufferStrategy;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -20,7 +16,7 @@ public class Game extends Canvas implements Runnable {
     private KeyInputHandler keyInputHandler;
     private HashMap<String, Actor> actors;
     private Stack<Actor> actorsToAdd;
-    private Barracks barracks;
+    private  int killCounter = 0;
 
     public Game () {
         actorsToAdd = new Stack<Actor>();
@@ -38,8 +34,8 @@ public class Game extends Canvas implements Runnable {
         while(running) {
             delta = (System.currentTimeMillis() - lastTime);
             lastTime = System.currentTimeMillis();
-            update(delta);
             render();
+            update(delta);
         }
     }
 
@@ -50,30 +46,17 @@ public class Game extends Canvas implements Runnable {
 
     private void init() {
         addKeyListener(keyInputHandler);
-
-        /*Actor actor = new Solider();
+        Actor actor = new Solider();
         actor.Init(50, 20);
         actors.put(actor.getId(), actor);
+        killCounter = 0;
 
-        actor = new Solider();
-        actor.Init(150, 20);
-        actors.put(actor.getId(), actor);
+        actorsToAdd.clear();
+        actors.clear();
 
-        actor = new Solider();
-        actor.Init(250, 20);
-        actors.put(actor.getId(), actor);
-
-        actor = new Solider();
-        actor.Init(350, 20);
-        actors.put(actor.getId(), actor);
-
-        actor = new Solider();
-        actor.Init(450, 20);
-        actors.put(actor.getId(), actor);*/
-
-        barracks = new Barracks(10000);
+        Barracks barracks = new Barracks(10000);
         barracks.Init(0,0);
-        actors.put("Barracks", barracks);
+        actors.put(barracks.getId(), barracks);
 
         Hero hero = new Hero(keyInputHandler, "Player");
         hero.Init(300, 700);
@@ -110,20 +93,46 @@ public class Game extends Canvas implements Runnable {
     }
 
     private void update(long delta) {
-
-        for(Iterator<Map.Entry<String, Actor>> it = actors.entrySet().iterator(); it.hasNext(); ) {
-            Map.Entry<String, Actor> entry = it.next();
-            if(!entry.getValue().getAlive()) {
-                it.remove();
-                break;
+        if( ((IUnit)actors.get("Player")).getHealth() > 80) {
+            for (Iterator<Map.Entry<String, Actor>> it = actors.entrySet().iterator(); it.hasNext(); ) {
+                Map.Entry<String, Actor> entry = it.next();
+                if (!entry.getValue().getAlive()) {
+                    if (entry.getValue() instanceof Solider) {
+                        killCounter ++;
+                    }
+                    it.remove();
+                    break;
+                }
+                entry.getValue().Update(delta, actors, actorsToAdd);
             }
-            entry.getValue().Update(delta, actors, actorsToAdd);
-        }
 
-        while (!actorsToAdd.isEmpty()) {
-            Actor actor = actorsToAdd.pop();
-            actors.put(actor.getId(), actor);
+            while (!actorsToAdd.isEmpty()) {
+                Actor actor = actorsToAdd.pop();
+                actors.put(actor.getId(), actor);
+            }
         }
+        else {
+            GameOver();
+        }
+    }
+
+    private void GameOver() {
+        running = false;
+        DrawScore();
+    }
+
+    private void DrawScore() {
+
+        Graphics g = getGraphics(); //получаем Graphics из созданной нами BufferStrategy
+        Graphics2D g2 = (Graphics2D)g;
+        g2.setColor(Color.WHITE);
+        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        g2.setFont(new Font("Arial", Font.BOLD, 72));
+        g2.drawString("Game Over",70,350);
+        g2.setFont(new Font("Arial", Font.BOLD, 72));
+        g2.setFont(new Font("Arial", Font.PLAIN, 45));
+        g2.drawString("You killed " + killCounter + " soliders",70,450);
+
     }
 
 }

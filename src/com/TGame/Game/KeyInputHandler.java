@@ -21,7 +21,6 @@ public class KeyInputHandler extends KeyAdapter{
 
     public boolean isDownPressed() { return downPressed; }
 
-
     public void keyPressed(KeyEvent e) { //клавиша нажата
         if (e.getKeyCode() == KeyEvent.VK_A) {
             leftPressed = true;

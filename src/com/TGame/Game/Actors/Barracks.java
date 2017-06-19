@@ -1,7 +1,5 @@
 package com.TGame.Game.Actors;
 
-import com.TGame.Game.Sprite;
-
 import java.awt.*;
 import java.awt.geom.Area;
 import java.util.HashMap;
@@ -17,7 +15,6 @@ public class Barracks extends Actor{
 
     public Barracks(long spawnDelay) {
         this.spawnDelay = spawnDelay;
-        this.sprite = new Sprite("Enemy.png");
         height = 64;
         width = 540;
     }
@@ -40,7 +37,6 @@ public class Barracks extends Actor{
 
     @Override
     public void Render(Graphics gContext) {
-
     }
 
     @Override
@@ -62,7 +58,6 @@ public class Barracks extends Actor{
             this.timeToSpawn = timeToSpawn;
         }
     }
-
     public double getTimeToSpawn() {
         return this.timeToSpawn;
     }
