@@ -13,7 +13,7 @@ import java.util.Stack;
 
 public class Solider extends Actor implements IUnit {
 
-    private final String spriteName = "Enemy.png";
+    private final String spriteName = "Enemy2.png";
 
     private Actor target;
     private double speed = 0.1 + Math.random() * 0.1;
@@ -62,7 +62,9 @@ public class Solider extends Actor implements IUnit {
                 Shoot(actorsToAdd);
             }
         }
-        if (health < 0) Die();
+        if (health < 0) {
+            Die();
+        }
     }
 
     private void Shoot(Stack<Actor> actorsToAdd) {
@@ -100,7 +102,7 @@ public class Solider extends Actor implements IUnit {
     private boolean FindTarget(HashMap<String, Actor> actors) {
         if (target == null){
             for (Map.Entry<String, Actor> actorEntry : actors.entrySet()) {
-                if (actorEntry.getValue().getName() == "Hero") {
+                if (actorEntry.getValue().getName().equals("Hero")) {
                     target = actorEntry.getValue();
                     return true;
                 }

@@ -24,6 +24,7 @@ public class Hero extends Actor implements IUnit{
     private int health = 100;
     private boolean isShooting = false;
     private double shootAngle = 0;
+    private double speed = 0.3;
 
 
     public Hero(KeyInputHandler keyInputHandler, String id) {
@@ -53,17 +54,18 @@ public class Hero extends Actor implements IUnit{
 
     @Override
     public void Update(long delta, HashMap<String, Actor> actors, Stack<Actor> actorsToAdd) {
+
         if (keyInputHandler.isUpPressed() && this.y > 0) {
-            this.y --;
+            this.Move(delta, Math.PI * 1.5);
         }
         if (keyInputHandler.isDownPressed() && this.y + this.height < HEIGHT) {
-            this.y ++;
+            this.Move(delta, Math.PI/2);
         }
         if (keyInputHandler.isLeftPressed() && this.x > 0) {
-            this.x --;
+            this.Move(delta, Math.PI);
         }
         if (keyInputHandler.isRightPressed() && this.x + this.width < WIDTH) {
-            this.x ++;
+            this.Move(delta, 0);
         }
 
         if(isShooting) Shoot(actorsToAdd);
@@ -71,6 +73,16 @@ public class Hero extends Actor implements IUnit{
         if (this.health <= 0) {
             this.Die();
         }
+    }
+    private void Move(long delta, double angle) {
+        if (angle > -1) {
+            PerformStep(angle, delta * speed);
+        }
+    }
+
+    private void PerformStep(double angle, double stepSize) {
+        y += Math.sin(angle) * stepSize;
+        x += Math.cos(angle) * stepSize;
     }
 
     @Override
