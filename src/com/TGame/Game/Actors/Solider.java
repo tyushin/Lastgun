@@ -18,8 +18,8 @@ public class Solider extends Actor implements IUnit {
     private Actor target;
     private double speed = 0.1 + Math.random() * 0.1;
 
-    private long fireTimer = 0;
-    private long TIME_TO_FIRE = 500;
+    private long fireTimer = (long)(Math.random() * 500);
+    private long TIME_TO_FIRE = 1000;
     protected int health = 20;
 
 

@@ -1,6 +1,7 @@
 package com.TGame.Game;
 
 import com.TGame.Game.Actors.Actor;
+import com.TGame.Game.Actors.Barracks;
 import com.TGame.Game.Actors.Hero;
 import com.TGame.Game.Actors.Solider;
 
@@ -19,6 +20,7 @@ public class Game extends Canvas implements Runnable {
     private KeyInputHandler keyInputHandler;
     private HashMap<String, Actor> actors;
     private Stack<Actor> actorsToAdd;
+    private Barracks barracks;
 
     public Game () {
         actorsToAdd = new Stack<Actor>();
@@ -49,7 +51,7 @@ public class Game extends Canvas implements Runnable {
     private void init() {
         addKeyListener(keyInputHandler);
 
-        Actor actor = new Solider();
+        /*Actor actor = new Solider();
         actor.Init(50, 20);
         actors.put(actor.getId(), actor);
 
@@ -67,8 +69,11 @@ public class Game extends Canvas implements Runnable {
 
         actor = new Solider();
         actor.Init(450, 20);
-        actors.put(actor.getId(), actor);
+        actors.put(actor.getId(), actor);*/
 
+        barracks = new Barracks(10000);
+        barracks.Init(0,0);
+        actors.put("Barracks", barracks);
 
         Hero hero = new Hero(keyInputHandler, "Player");
         hero.Init(300, 700);
